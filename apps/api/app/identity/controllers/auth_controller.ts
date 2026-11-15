@@ -1,4 +1,5 @@
 import { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
 
 import { loginValidator, signupValidator } from '../validators/user.ts'
 import UserTransformer from '../transformers/user_transformer.ts'
@@ -7,7 +8,9 @@ import User from '../models/user.ts'
 export default class AuthController {
   async register({ request, auth }: HttpContext) {
     const payload = await request.validateUsing(signupValidator)
-    const user = await User.create({ ...payload })
+    const user = await db.transaction(async trx => {
+      return User.create({ ...payload }, { client: trx })
+    })
 
     await auth.use('web').login(user)
   }

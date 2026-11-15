@@ -2,7 +2,7 @@ import { UserSchema } from '#database/schema'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import { belongsTo } from '@adonisjs/lucid/orm'
+import { beforeCreate, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
 import Organization from '#models/organization'
@@ -10,6 +10,19 @@ import Organization from '#models/organization'
 export default class User extends compose(UserSchema, withAuthFinder(hash)) {
   @belongsTo(() => Organization)
   declare organization: BelongsTo<typeof Organization>
+
+  @beforeCreate()
+  static async assignOrganization(user: User) {
+    if (user.organizationId) {
+      return
+    }
+
+    const organization = await Organization.create(
+      { name: `${user.fullName} pro` },
+      { client: user.$trx },
+    )
+    user.organizationId = organization.id
+  }
 
   /**
    * Users created via Google have no password. The mixin throws in that
