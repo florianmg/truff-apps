@@ -1,6 +1,4 @@
-# AdonisJS Starter Kit
-
-Full-stack, opinionated starter kit that brings together AdonisJS 7 (beta) and React with TanStack Router in a monorepo, designed to quickly bootstrap new projects and experiment with ideas. Shared as-is : some parts reflect my personal workflow and preferences.
+# Truff apps
 
 ## What's inside?
 
@@ -20,7 +18,7 @@ Full-stack, opinionated starter kit that brings together AdonisJS 7 (beta) and R
 1. Clone the repo:
    ```bash
    git clone <repository-url>
-   cd adonis-starter-kit
+   cd truff-apps
    ```
 2. Install dependencies:
    ```bash
@@ -33,6 +31,7 @@ Full-stack, opinionated starter kit that brings together AdonisJS 7 (beta) and R
 4. Run migrations:
    ```bash
    cd apps/api
+   cp .env.test .env
    node ace migration:run
    ```
 5. Start the dev servers:
