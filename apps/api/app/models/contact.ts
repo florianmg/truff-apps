@@ -1,7 +1,7 @@
 import { ContactSchema } from '#database/schema'
 import { belongsTo, column } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import type { ContactType } from '#shared/contacts'
+import type { ContactType } from '@truff-apps/domain/contacts'
 
 import Client from '#models/client'
 import Organization from '#models/organization'

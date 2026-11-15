@@ -46,6 +46,7 @@
     "@adonisjs/session": "^8.0.0",
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",
+    "@truff-apps/domain": "workspace:*",
     "@tuyau/core": "catalog:",
     "@vinejs/vine": "^4.3.0",
     "luxon": "^3.7.2",

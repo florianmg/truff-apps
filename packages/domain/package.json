@@ -1,0 +1,17 @@
+{
+  "name": "@truff-apps/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./contacts": "./src/contacts.ts",
+    "./animals": "./src/animals.ts",
+    "./files": "./src/files.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

@@ -19,6 +19,7 @@
     "@tanstack/react-router-devtools": "^1.166.9",
     "@tanstack/router-plugin": "^1.166.14",
     "@truff-apps/api": "workspace:*",
+    "@truff-apps/domain": "workspace:*",
     "@tuyau/core": "catalog:",
     "@tuyau/react-query": "^1.1.0",
     "class-variance-authority": "^0.7.1",

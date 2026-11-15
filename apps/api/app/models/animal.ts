@@ -1,7 +1,7 @@
 import { AnimalSchema } from '#database/schema'
 import { belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
-import type { AnimalSex, AnimalSpecies } from '#shared/animals'
+import type { AnimalSex, AnimalSpecies } from '@truff-apps/domain/animals'
 
 import AnimalDocument from '#models/animal_document'
 import Client from '#models/client'
