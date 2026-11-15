@@ -7,7 +7,7 @@ import { queryClient } from '@/lib/query_client'
 import { redirectToDashboardIfAuthenticated } from '@/hooks/auth'
 import { Input } from '@/components/ui/input'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/auth/login')({
@@ -35,7 +35,7 @@ function RouteComponent() {
         if (error.response?.data?.errors) {
           setErrors(error.response.data.errors)
         } else {
-          setErrors({ general: 'Login failed. Please check your credentials.' })
+          setErrors({ general: 'Identifiants invalides.' })
         }
       },
     }),
@@ -44,8 +44,9 @@ function RouteComponent() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setErrors({})
-
-    login.mutate({ body: { email: formData.email, password: formData.password } })
+    login.mutate({
+      body: { email: formData.email, password: formData.password },
+    })
   }
 
   const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,66 +57,59 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
-      <div className="w-full max-w-lg px-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Login to your account</CardTitle>
-            <CardDescription>Enter your email below to login to your account</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit}>
-              <FieldGroup>
-                {errors.general && (
-                  <FieldDescription className="text-red-500 text-center">
-                    {errors.general}
-                  </FieldDescription>
-                )}
-                <Field>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    value={formData.email}
-                    onChange={handleChange('email')}
-                    required
-                  />
-                </Field>
-                <Field>
-                  <div className="flex items-center">
-                    <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <a
-                      href="#"
-                      className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                    >
-                      Forgot your password?
-                    </a>
-                  </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange('password')}
-                    required
-                  />
-                </Field>
-                <Field>
-                  <Button type="submit" disabled={login.isPending}>
-                    {login.isPending ? 'Logging in...' : 'Login'}
-                  </Button>
-                  <FieldDescription className="text-center">
-                    Don't have an account?{' '}
-                    <Link to="/auth/register" className="text-blue-600 hover:underline">
-                      Sign up
-                    </Link>
-                  </FieldDescription>
-                </Field>
-              </FieldGroup>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <main className="flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Connexion</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <FieldGroup>
+              {errors.general && (
+                <FieldDescription className="text-destructive text-center">
+                  {errors.general}
+                </FieldDescription>
+              )}
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange('email')}
+                  required
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  value={formData.password}
+                  onChange={handleChange('password')}
+                  required
+                />
+              </Field>
+              <Field>
+                <Button type="submit" className="w-full" disabled={login.isPending}>
+                  {login.isPending ? 'Connexion…' : 'Se connecter'}
+                </Button>
+                <FieldDescription className="text-center">
+                  Pas de compte ?{' '}
+                  <Link
+                    to="/auth/register"
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    S&apos;inscrire
+                  </Link>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
   )
 }

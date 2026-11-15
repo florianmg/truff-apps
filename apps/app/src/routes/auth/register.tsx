@@ -7,7 +7,7 @@ import { queryClient } from '@/lib/query_client'
 import { redirectToDashboardIfAuthenticated } from '@/hooks/auth'
 import { Input } from '@/components/ui/input'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/auth/register')({
@@ -26,6 +26,7 @@ function RouteComponent() {
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
+
   const register = useMutation(
     query.auth.register.mutationOptions({
       onSuccess: async () => {
@@ -47,7 +48,7 @@ function RouteComponent() {
         fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
-        // @ts-ignore not explicitly defined in validator but accepted
+        // @ts-expect-error accepté par l’API (confirmation Vine)
         passwordConfirmation: formData.confirmPassword,
       },
     })
@@ -61,84 +62,76 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
-      <div className="w-full max-w-lg px-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Create an account</CardTitle>
-            <CardDescription>Enter your information below to create your account</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit}>
-              <FieldGroup>
-                <Field>
-                  <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    value={formData.fullName}
-                    onChange={handleChange('fullName')}
-                    required
-                  />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    value={formData.email}
-                    onChange={handleChange('email')}
-                    required
-                  />
-                  <FieldDescription>
-                    We'll use this to contact you. We will not share your email with anyone else.
-                  </FieldDescription>
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange('password')}
-                    required
-                  />
-                  <FieldDescription>Must be at least 8 characters long.</FieldDescription>
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
-                  <Input
-                    id="confirm-password"
-                    type="password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange('confirmPassword')}
-                    required
-                  />
-                  <FieldDescription>Please confirm your password.</FieldDescription>
-                </Field>
-                <FieldGroup>
-                  <Field>
-                    <Button type="submit" disabled={register.isPending}>
-                      {register.isPending ? 'Creating Account...' : 'Create Account'}
-                    </Button>
-                    <Button variant="outline" type="button">
-                      Sign up with Google
-                    </Button>
-                    <FieldDescription className="px-6 text-center">
-                      Already have an account?{' '}
-                      <Link to="/auth/login" className="text-blue-600 hover:underline">
-                        Sign in
-                      </Link>
-                    </FieldDescription>
-                  </Field>
-                </FieldGroup>
-              </FieldGroup>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <main className="flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Inscription</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="name">Nom</FieldLabel>
+                <Input
+                  id="name"
+                  type="text"
+                  autoComplete="name"
+                  value={formData.fullName}
+                  onChange={handleChange('fullName')}
+                  required
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange('email')}
+                  required
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={formData.password}
+                  onChange={handleChange('password')}
+                  required
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="confirm-password">Confirmation</FieldLabel>
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange('confirmPassword')}
+                  required
+                />
+              </Field>
+              <Field>
+                <Button type="submit" className="w-full" disabled={register.isPending}>
+                  {register.isPending ? 'Création…' : 'Créer le compte'}
+                </Button>
+                <FieldDescription className="text-center">
+                  Déjà un compte ?{' '}
+                  <Link
+                    to="/auth/login"
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    Se connecter
+                  </Link>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
   )
 }

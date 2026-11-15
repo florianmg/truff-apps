@@ -1,10 +1,10 @@
-import type { Data } from '@acme/api/data'
-
-import { createFileRoute } from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
 import { getMeQueryOptions, redirectToLoginIfNotAuthenticated } from '@/hooks/auth'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { query } from '@/lib/tuyau'
+import { queryClient } from '@/lib/query_client'
+import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/dashboard')({
   component: RouteComponent,
@@ -12,34 +12,24 @@ export const Route = createFileRoute('/dashboard')({
 })
 
 function RouteComponent() {
+  const navigate = useNavigate()
   const { data: user } = useSuspenseQuery(getMeQueryOptions())
 
-  return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
-      <div className="w-full max-w-2xl mx-auto px-4">
-        <UserCard user={user} />
-      </div>
-    </div>
+  const logout = useMutation(
+    query.auth.logout.mutationOptions({
+      onSuccess: async () => {
+        queryClient.clear()
+        await navigate({ to: '/' })
+      },
+    }),
   )
-}
 
-export function UserCard({ user }: { user: Data.Identity.User }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Welcome back!</CardTitle>
-        <CardDescription>Here's your account information</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div>
-          <p className="text-sm text-gray-500">Full Name</p>
-          <p className="text-lg font-medium">{user.fullName}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500">Email</p>
-          <p className="text-lg font-medium">{user.email}</p>
-        </div>
-      </CardContent>
-    </Card>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-4">
+      <p className="text-muted-foreground">{user.email}</p>
+      <Button variant="outline" onClick={() => logout.mutate({})} disabled={logout.isPending}>
+        Se déconnecter
+      </Button>
+    </main>
   )
 }
