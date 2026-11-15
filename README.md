@@ -46,7 +46,7 @@ The API will be running at `http://localhost:3333` and the frontend at `http://l
 ```
 apps/
   api/   # AdonisJS backend
-  app/   # React frontend
+  web/   # React frontend
 compose.yaml
 turbo.json
 pnpm-workspace.yaml

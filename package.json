@@ -1,5 +1,5 @@
 {
-  "name": "@acme/monorepo",
+  "name": "@truff-apps/monorepo",
   "type": "module",
   "scripts": {
     "prepare": "lefthook install",
