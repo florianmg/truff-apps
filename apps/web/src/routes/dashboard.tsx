@@ -5,6 +5,7 @@ import { getMeQueryOptions, redirectToLoginIfNotAuthenticated } from '@/hooks/au
 import { query } from '@/lib/tuyau'
 import { queryClient } from '@/lib/query_client'
 import { Button } from '@/components/ui/button'
+import { BrandLogo } from '@/components/brand_logo'
 
 export const Route = createFileRoute('/dashboard')({
   component: RouteComponent,
@@ -26,6 +27,7 @@ function RouteComponent() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-4">
+      <BrandLogo />
       <p className="text-muted-foreground">{user.email}</p>
       <Button variant="outline" onClick={() => logout.mutate({})} disabled={logout.isPending}>
         Se déconnecter

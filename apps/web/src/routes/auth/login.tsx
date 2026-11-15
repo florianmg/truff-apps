@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { BrandLogo } from '@/components/brand_logo'
 
 export const Route = createFileRoute('/auth/login')({
   component: RouteComponent,
@@ -59,7 +60,8 @@ function RouteComponent() {
   return (
     <main className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
-        <CardHeader>
+        <CardHeader className="flex flex-col gap-4">
+          <BrandLogo />
           <CardTitle>Connexion</CardTitle>
         </CardHeader>
         <CardContent>
