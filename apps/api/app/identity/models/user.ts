@@ -1,17 +1,24 @@
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { UserSchema } from '#database/schema'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import { WithPrimaryUuid } from '#app/core/mixins/with_uuid_pk'
-import { WithTimestamps } from '#app/core/mixins/with_timestamps'
+import { belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
-const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
-  uids: ['email'],
-  passwordColumnName: 'password',
-})
+import Organization from '#models/organization'
 
-export default class User extends compose(BaseModel, AuthFinder, WithTimestamps, WithPrimaryUuid) {
-  @column() declare fullName: string | null
-  @column() declare email: string
-  @column({ serializeAs: null }) declare password: string
+export default class User extends compose(UserSchema, withAuthFinder(hash)) {
+  @belongsTo(() => Organization)
+  declare organization: BelongsTo<typeof Organization>
+
+  /**
+   * Users created via Google have no password. The mixin throws in that
+   * case, which would turn a failed login into a server error.
+   */
+  async verifyPassword(plainPassword: string) {
+    if (!this.password) {
+      return false
+    }
+    return super.verifyPassword(plainPassword)
+  }
 }

@@ -7,8 +7,256 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class AddressSchema extends BaseModel {
+  static $columns = [
+    'clientId',
+    'createdAt',
+    'formattedAddress',
+    'id',
+    'latitude',
+    'longitude',
+    'organizationId',
+    'placeId',
+    'updatedAt',
+  ] as const
+  $columns = AddressSchema.$columns
+  @column()
+  declare clientId: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare formattedAddress: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare latitude: string | null
+  @column()
+  declare longitude: string | null
+  @column()
+  declare organizationId: number
+  @column()
+  declare placeId: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class AnimalDocumentSchema extends BaseModel {
+  static $columns = ['animalId', 'createdAt', 'fileId', 'id', 'updatedAt'] as const
+  $columns = AnimalDocumentSchema.$columns
+  @column()
+  declare animalId: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare fileId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class AnimalSchema extends BaseModel {
+  static $columns = [
+    'adoptionDate',
+    'birthDate',
+    'breed',
+    'chipNumber',
+    'clientId',
+    'createdAt',
+    'diet',
+    'foodInstructions',
+    'id',
+    'name',
+    'profileFileId',
+    'sex',
+    'species',
+    'sterilized',
+    'tattoo',
+    'updatedAt',
+    'weight',
+  ] as const
+  $columns = AnimalSchema.$columns
+  @column.date()
+  declare adoptionDate: DateTime | null
+  @column.date()
+  declare birthDate: DateTime | null
+  @column()
+  declare breed: string | null
+  @column()
+  declare chipNumber: string | null
+  @column()
+  declare clientId: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare diet: string | null
+  @column()
+  declare foodInstructions: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column()
+  declare profileFileId: number | null
+  @column()
+  declare sex: string | null
+  @column()
+  declare species: string
+  @column()
+  declare sterilized: boolean | null
+  @column()
+  declare tattoo: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare weight: string | null
+}
+
+export class ClientSchema extends BaseModel {
+  static $columns = [
+    'accessCode',
+    'createdAt',
+    'emergencyCareConsent',
+    'floor',
+    'id',
+    'note',
+    'organizationId',
+    'profileFileId',
+    'socialMediaConsent',
+    'updatedAt',
+  ] as const
+  $columns = ClientSchema.$columns
+  @column()
+  declare accessCode: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare emergencyCareConsent: boolean | null
+  @column()
+  declare floor: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare note: string | null
+  @column()
+  declare organizationId: number
+  @column()
+  declare profileFileId: number | null
+  @column()
+  declare socialMediaConsent: boolean | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class ContactSchema extends BaseModel {
+  static $columns = [
+    'clientId',
+    'createdAt',
+    'email',
+    'firstName',
+    'id',
+    'isPrimary',
+    'lastName',
+    'organizationId',
+    'phone',
+    'prefersWhatsapp',
+    'type',
+    'updatedAt',
+  ] as const
+  $columns = ContactSchema.$columns
+  @column()
+  declare clientId: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare email: string | null
+  @column()
+  declare firstName: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare isPrimary: boolean
+  @column()
+  declare lastName: string
+  @column()
+  declare organizationId: number
+  @column()
+  declare phone: string | null
+  @column()
+  declare prefersWhatsapp: boolean
+  @column()
+  declare type: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class FileSchema extends BaseModel {
+  static $columns = [
+    'byteSize',
+    'createdAt',
+    'disk',
+    'extname',
+    'id',
+    'key',
+    'mimeType',
+    'organizationId',
+    'originalName',
+    'updatedAt',
+    'visibility',
+  ] as const
+  $columns = FileSchema.$columns
+  @column()
+  declare byteSize: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare disk: string
+  @column()
+  declare extname: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare key: string
+  @column()
+  declare mimeType: string
+  @column()
+  declare organizationId: number
+  @column()
+  declare originalName: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare visibility: string
+}
+
+export class OrganizationSchema extends BaseModel {
+  static $columns = ['color', 'createdAt', 'id', 'logoFileId', 'name', 'updatedAt'] as const
+  $columns = OrganizationSchema.$columns
+  @column()
+  declare color: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare logoFileId: number | null
+  @column()
+  declare name: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
+  static $columns = [
+    'createdAt',
+    'email',
+    'fullName',
+    'googleId',
+    'id',
+    'organizationId',
+    'password',
+    'updatedAt',
+  ] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -16,10 +264,14 @@ export class UserSchema extends BaseModel {
   declare email: string
   @column()
   declare fullName: string | null
+  @column()
+  declare googleId: string | null
   @column({ isPrimary: true })
-  declare id: string
+  declare id: number
+  @column()
+  declare organizationId: number
   @column({ serializeAs: null })
-  declare password: string
+  declare password: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
