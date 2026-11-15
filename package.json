@@ -1,5 +1,6 @@
 {
   "name": "@acme/monorepo",
+  "type": "module",
   "scripts": {
     "prepare": "lefthook install",
     "dev": "turbo dev --ui=tui",
