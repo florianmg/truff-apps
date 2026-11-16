@@ -3,7 +3,11 @@ import db from '@adonisjs/lucid/services/db'
 import Client from '#models/client'
 import Contact from '#models/contact'
 import ClientTransformer from '#transformers/client_transformer'
-import { createClientValidator, listClientsValidator } from '#validators/client'
+import {
+  clientIdParamsValidator,
+  createClientValidator,
+  listClientsValidator,
+} from '#validators/client'
 
 export default class ClientsController {
   async index({ request, serialize, auth }: HttpContext) {
@@ -55,12 +59,13 @@ export default class ClientsController {
     )
   }
 
-  async show({ params, serialize, auth }: HttpContext) {
+  async show({ request, serialize, auth }: HttpContext) {
     const user = auth.getUserOrFail()
+    const { params } = await request.validateUsing(clientIdParamsValidator)
 
     const client = await Client.query()
       .where('organizationId', user.organizationId)
-      .where('id', params.id)
+      .where('id', params.clientId)
       .preload('contacts')
       .preload('address')
       .preload('animals')
@@ -71,12 +76,13 @@ export default class ClientsController {
     )
   }
 
-  async destroy({ params, response, auth }: HttpContext) {
+  async destroy({ request, response, auth }: HttpContext) {
     const user = auth.getUserOrFail()
+    const { params } = await request.validateUsing(clientIdParamsValidator)
 
     const client = await Client.query()
       .where('organizationId', user.organizationId)
-      .where('id', params.id)
+      .where('id', params.clientId)
       .firstOrFail()
 
     await client.delete()

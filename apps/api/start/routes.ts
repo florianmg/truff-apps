@@ -16,8 +16,8 @@ defineRouteGroup(() => {
 defineRouteGroup('clients', () => {
   router.get('/', [controllers.Clients, 'index'])
   router.post('/', [controllers.Clients, 'store'])
-  router.get('/:id', [controllers.Clients, 'show'])
-  router.delete('/:id', [controllers.Clients, 'destroy'])
+  router.get('/:clientId', [controllers.Clients, 'show'])
+  router.delete('/:clientId', [controllers.Clients, 'destroy'])
 }).use(middleware.auth())
 
 router.get('/is-authenticated', [controllers.Auth, 'isAuthenticated'])

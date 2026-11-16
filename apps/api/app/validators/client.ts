@@ -11,3 +11,9 @@ export const listClientsValidator = vine.create({
   page: vine.number().min(1).optional(),
   perPage: vine.number().min(1).max(100).optional(),
 })
+
+export const clientIdParamsValidator = vine.create({
+  params: vine.object({
+    clientId: vine.number().withoutDecimals().positive(),
+  }),
+})
