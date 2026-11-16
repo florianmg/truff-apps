@@ -13,5 +13,12 @@ defineRouteGroup(() => {
   router.get('me', [controllers.Auth, 'getMe'])
 }).use(middleware.auth())
 
+defineRouteGroup('clients', () => {
+  router.get('/', [controllers.Clients, 'index'])
+  router.post('/', [controllers.Clients, 'store'])
+  router.get('/:id', [controllers.Clients, 'show'])
+  router.delete('/:id', [controllers.Clients, 'destroy'])
+}).use(middleware.auth())
+
 router.get('/is-authenticated', [controllers.Auth, 'isAuthenticated'])
 router.get('health', [controllers.HealthChecks, 'handle']).use(middleware.requireSecretToken())

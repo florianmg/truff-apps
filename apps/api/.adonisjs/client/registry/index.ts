@@ -30,6 +30,30 @@ const routes = {
     tokens: [{"old":"/me","type":0,"val":"me","end":""}],
     types: placeholder as Registry['auth.get_me']['types'],
   },
+  'clients.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/clients',
+    tokens: [{"old":"/clients","type":0,"val":"clients","end":""}],
+    types: placeholder as Registry['clients.index']['types'],
+  },
+  'clients.store': {
+    methods: ["POST"],
+    pattern: '/clients',
+    tokens: [{"old":"/clients","type":0,"val":"clients","end":""}],
+    types: placeholder as Registry['clients.store']['types'],
+  },
+  'clients.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/clients/:id',
+    tokens: [{"old":"/clients/:id","type":0,"val":"clients","end":""},{"old":"/clients/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['clients.show']['types'],
+  },
+  'clients.destroy': {
+    methods: ["DELETE"],
+    pattern: '/clients/:id',
+    tokens: [{"old":"/clients/:id","type":0,"val":"clients","end":""},{"old":"/clients/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['clients.destroy']['types'],
+  },
   'auth.is_authenticated': {
     methods: ["GET","HEAD"],
     pattern: '/is-authenticated',

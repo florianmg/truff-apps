@@ -5,9 +5,29 @@
 
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
+import type AddressTransformer from '#app/transformers/address_transformer'
+import type AnimalTransformer from '#app/transformers/animal_transformer'
+import type ClientTransformer from '#app/transformers/client_transformer'
+import type ContactTransformer from '#app/transformers/contact_transformer'
 import type UserTransformer from '#app/transformers/user_transformer'
 
 export namespace Data {
+  export type Address = InferData<AddressTransformer>
+  export namespace Address {
+    export type Variants = InferVariants<AddressTransformer>
+  }
+  export type Animal = InferData<AnimalTransformer>
+  export namespace Animal {
+    export type Variants = InferVariants<AnimalTransformer>
+  }
+  export type Client = InferData<ClientTransformer>
+  export namespace Client {
+    export type Variants = InferVariants<ClientTransformer>
+  }
+  export type Contact = InferData<ContactTransformer>
+  export namespace Contact {
+    export type Variants = InferVariants<ContactTransformer>
+  }
   export type User = InferData<UserTransformer>
   export namespace User {
     export type Variants = InferVariants<UserTransformer>

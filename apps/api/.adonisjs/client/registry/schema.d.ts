@@ -11,10 +11,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/register'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#app/validators/user').signupValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#validators/user').signupValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#app/validators/user').signupValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').signupValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['register']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['register']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -23,10 +23,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/login'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#app/validators/user').loginValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#validators/user').loginValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#app/validators/user').loginValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').loginValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['login']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -53,6 +53,54 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['getMe']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['getMe']>>>
+    }
+  }
+  'clients.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/clients'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/client').listClientsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'clients.store': {
+    methods: ["POST"]
+    pattern: '/clients'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/client').createClientValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/client').createClientValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'clients.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/clients/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['show']>>>
+    }
+  }
+  'clients.destroy': {
+    methods: ["DELETE"]
+    pattern: '/clients/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['destroy']>>>
     }
   }
   'auth.is_authenticated': {

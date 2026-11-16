@@ -8,6 +8,10 @@ export type ScannedRoutes = {
     'auth.login': { paramsTuple?: []; params?: {} }
     'auth.logout': { paramsTuple?: []; params?: {} }
     'auth.get_me': { paramsTuple?: []; params?: {} }
+    'clients.index': { paramsTuple?: []; params?: {} }
+    'clients.store': { paramsTuple?: []; params?: {} }
+    'clients.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'clients.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'auth.is_authenticated': { paramsTuple?: []; params?: {} }
     'health_checks': { paramsTuple?: []; params?: {} }
   }
@@ -15,16 +19,24 @@ export type ScannedRoutes = {
     'auth.register': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'auth.logout': { paramsTuple?: []; params?: {} }
+    'clients.store': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'auth.get_me': { paramsTuple?: []; params?: {} }
+    'clients.index': { paramsTuple?: []; params?: {} }
+    'clients.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'auth.is_authenticated': { paramsTuple?: []; params?: {} }
     'health_checks': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'auth.get_me': { paramsTuple?: []; params?: {} }
+    'clients.index': { paramsTuple?: []; params?: {} }
+    'clients.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'auth.is_authenticated': { paramsTuple?: []; params?: {} }
     'health_checks': { paramsTuple?: []; params?: {} }
+  }
+  DELETE: {
+    'clients.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {
