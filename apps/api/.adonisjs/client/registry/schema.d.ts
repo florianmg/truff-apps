@@ -81,26 +81,122 @@ export interface Registry {
   }
   'clients.show': {
     methods: ["GET","HEAD"]
-    pattern: '/clients/:id'
+    pattern: '/clients/:clientId'
     types: {
       body: {}
       paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
+      params: { clientId: ParamValue }
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/client').clientIdParamsValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'clients.destroy': {
     methods: ["DELETE"]
-    pattern: '/clients/:id'
+    pattern: '/clients/:clientId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/client').clientIdParamsValidator)>>
+      paramsTuple: [ParamValue]
+      params: { clientId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/client').clientIdParamsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'animals.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/animals'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/animal').listAnimalsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'animals.store': {
+    methods: ["POST"]
+    pattern: '/animals'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/animal').createAnimalValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/animal').createAnimalValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'animals.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/animals/:animalId'
     types: {
       body: {}
       paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/clients_controller').default['destroy']>>>
+      params: { animalId: ParamValue }
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/animal').animalIdParamsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'animals.destroy': {
+    methods: ["DELETE"]
+    pattern: '/animals/:animalId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/animal').animalIdParamsValidator)>>
+      paramsTuple: [ParamValue]
+      params: { animalId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/animal').animalIdParamsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/animals_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'contacts.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/contacts'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/contact').listContactsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'contacts.store': {
+    methods: ["POST"]
+    pattern: '/contacts'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/contact').createContactValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/contact').createContactValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'contacts.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/contacts/:contactId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { contactId: ParamValue }
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/contact').contactIdParamsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'contacts.destroy': {
+    methods: ["DELETE"]
+    pattern: '/contacts/:contactId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/contact').contactIdParamsValidator)>>
+      paramsTuple: [ParamValue]
+      params: { contactId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/contact').contactIdParamsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/contacts_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.is_authenticated': {

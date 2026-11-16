@@ -15,5 +15,17 @@ export interface ApiDefinition {
     show: typeof routes['clients.show']
     destroy: typeof routes['clients.destroy']
   }
+  animals: {
+    index: typeof routes['animals.index']
+    store: typeof routes['animals.store']
+    show: typeof routes['animals.show']
+    destroy: typeof routes['animals.destroy']
+  }
+  contacts: {
+    index: typeof routes['contacts.index']
+    store: typeof routes['contacts.store']
+    show: typeof routes['contacts.show']
+    destroy: typeof routes['contacts.destroy']
+  }
   healthChecks: typeof routes['health_checks']
 }
