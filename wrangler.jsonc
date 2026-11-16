@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "truff-web-app",
+  "name": "truff-webapp",
   "compatibility_date": "2025-11-16",
   "assets": {
     "directory": "./apps/web/dist",
