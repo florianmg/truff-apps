@@ -4,7 +4,9 @@
  */
 
 export const controllers = {
+  Animals: () => import('#app/controllers/animals_controller'),
   Auth: () => import('#app/controllers/auth_controller'),
   Clients: () => import('#app/controllers/clients_controller'),
+  Contacts: () => import('#app/controllers/contacts_controller'),
   HealthChecks: () => import('#app/controllers/health_checks_controller'),
 }
