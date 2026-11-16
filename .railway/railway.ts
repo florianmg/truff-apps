@@ -16,7 +16,7 @@ export default defineRailway(() => {
         '/mise.toml',
       ],
     },
-    start: 'node apps/api/build/bin/server.js',
+    start: 'pnpm --filter @truff-apps/api start',
     preDeploy: 'node apps/api/build/ace.js migration:run --force',
     env: {
       NODE_ENV: 'production',
