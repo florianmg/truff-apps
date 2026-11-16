@@ -1,19 +1,17 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
-import { defineRouteGroup } from '#app/core/utils/index'
-
-const { identity, core } = controllers
+import { defineRouteGroup } from '#utils/index'
 
 defineRouteGroup(() => {
-  router.post('register', [identity.Auth, 'register'])
-  router.post('login', [identity.Auth, 'login'])
+  router.post('register', [controllers.Auth, 'register'])
+  router.post('login', [controllers.Auth, 'login'])
 }).use(middleware.guest())
 
 defineRouteGroup(() => {
-  router.post('logout', [identity.Auth, 'logout'])
-  router.get('me', [identity.Auth, 'getMe'])
+  router.post('logout', [controllers.Auth, 'logout'])
+  router.get('me', [controllers.Auth, 'getMe'])
 }).use(middleware.auth())
 
-router.get('/is-authenticated', [identity.Auth, 'isAuthenticated'])
-router.get('health', [core.HealthChecks, 'handle']).use(middleware.requireSecretToken())
+router.get('/is-authenticated', [controllers.Auth, 'isAuthenticated'])
+router.get('health', [controllers.HealthChecks, 'handle']).use(middleware.requireSecretToken())

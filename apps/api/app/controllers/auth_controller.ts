@@ -1,9 +1,9 @@
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 
-import { loginValidator, signupValidator } from '../validators/user.ts'
-import UserTransformer from '../transformers/user_transformer.ts'
-import User from '../models/user.ts'
+import { loginValidator, signupValidator } from '#validators/user'
+import UserTransformer from '#transformers/user_transformer'
+import User from '#models/user'
 
 export default class AuthController {
   async register({ request, auth }: HttpContext) {

@@ -11,24 +11,24 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/register'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#app/identity/validators/user').signupValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/validators/user').signupValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#app/identity/validators/user').signupValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['register']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['register']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/validators/user').signupValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['register']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['register']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.login': {
     methods: ["POST"]
     pattern: '/login'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#app/identity/validators/user').loginValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/validators/user').loginValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#app/identity/validators/user').loginValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['login']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/validators/user').loginValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['login']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.logout': {
@@ -39,8 +39,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['logout']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['logout']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['logout']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['logout']>>>
     }
   }
   'auth.get_me': {
@@ -51,8 +51,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['getMe']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['getMe']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['getMe']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['getMe']>>>
     }
   }
   'auth.is_authenticated': {
@@ -63,8 +63,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['isAuthenticated']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/auth_controller').default['isAuthenticated']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['isAuthenticated']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/auth_controller').default['isAuthenticated']>>>
     }
   }
   'health_checks': {
@@ -75,8 +75,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#app/core/controllers/health_checks_controller').default['handle']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/core/controllers/health_checks_controller').default['handle']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/controllers/health_checks_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/controllers/health_checks_controller').default['handle']>>>
     }
   }
 }

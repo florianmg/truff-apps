@@ -4,10 +4,6 @@
  */
 
 export const controllers = {
-  core: {
-    HealthChecks: () => import('#app/core/controllers/health_checks_controller'),
-  },
-  identity: {
-    Auth: () => import('#app/identity/controllers/auth_controller'),
-  },
+  Auth: () => import('#app/controllers/auth_controller'),
+  HealthChecks: () => import('#app/controllers/health_checks_controller'),
 }

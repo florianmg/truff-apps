@@ -5,8 +5,8 @@
   "type": "module",
   "imports": {
     "#app/*": "./app/*.js",
-    "#core/*": "./app/core/*.js",
-    "#identity/*": "./app/identity/*.js",
+    "#mixins/*": "./app/mixins/*.js",
+    "#utils/*": "./app/utils/*.js",
     "#controllers/*": "./app/controllers/*.js",
     "#exceptions/*": "./app/exceptions/*.js",
     "#models/*": "./app/models/*.js",
@@ -69,8 +69,8 @@
   },
   "hotHook": {
     "boundaries": [
-      "./app/**/controllers/**/*.ts",
-      "./app/**/middleware/**/*.ts"
+      "./app/controllers/**/*.ts",
+      "./app/middleware/**/*.ts"
     ]
   }
 }
