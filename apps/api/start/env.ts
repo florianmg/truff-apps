@@ -8,6 +8,13 @@ export default await Env.create(new URL('../', import.meta.url), {
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),
 
+  /*
+  |----------------------------------------------------------
+  | CORS allowed origins (comma-separated)
+  |----------------------------------------------------------
+  */
+  CORS_ORIGIN: Env.schema.string(),
+
   /**
    * ----------------------------------------------------------
    * Variables for configuring database

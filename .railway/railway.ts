@@ -27,6 +27,7 @@ export default defineRailway(() => {
       APP_URL: 'https://${{@truff-apps/api.RAILWAY_PUBLIC_DOMAIN}}',
       APP_KEY: preserve(),
       SECRET_TOKEN: preserve(),
+      CORS_ORIGIN: preserve(),
       DB_HOST: db.env.PGHOST,
       DB_PORT: db.env.PGPORT,
       DB_USER: db.env.PGUSER,

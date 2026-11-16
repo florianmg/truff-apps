@@ -59,6 +59,28 @@ pnpm-workspace.yaml
 - `pnpm lint` – lint the whole project
 - `pnpm format` – format code with Oxformat
 
+## Production deployment
+
+### API (Railway)
+
+Set on the `@truff-apps/api` service (dashboard or `railway variable set`):
+
+- `APP_KEY` – Adonis encryption key (`node ace generate:key` in `apps/api`)
+- `SECRET_TOKEN` – random secret for protected routes
+- `CORS_ORIGIN` – URL of the frontend that calls the API (comma-separated if several), e.g. `https://truff-webapp.<account>.workers.dev`
+
+Apply `.railway/railway.ts` when the project is linked: `railway config plan` then `railway config apply`.
+
+### Frontend (Cloudflare Workers)
+
+The SPA reads `VITE_API_URL` at **build** time (see `apps/web/src/lib/tuyau.ts`). Set it when building:
+
+```bash
+VITE_API_URL=https://<your-railway-api>.up.railway.app pnpm deploy:web
+```
+
+In Cloudflare Workers Builds, add the same variable to the build environment. Example local file: copy `apps/web/.env.example` to `apps/web/.env.production` (not committed) before `pnpm build:web`.
+
 ---
 
 Feel free to fork, get inspired, or contribute if you want!
