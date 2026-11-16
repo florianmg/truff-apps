@@ -1,9 +1,9 @@
 import { defineRailway, github, postgres, preserve, project, service } from 'railway/iac'
 
 export default defineRailway(() => {
-  const db = postgres('postgres')
+  const db = postgres('Postgres')
 
-  const api = service('api', {
+  const api = service('@truff-apps/api', {
     source: github('florianmg/truff-apps', { branch: 'main' }),
     build: {
       buildCommand: 'pnpm --filter @truff-apps/api build',
@@ -24,7 +24,7 @@ export default defineRailway(() => {
       LOG_LEVEL: 'info',
       TZ: 'UTC',
       SESSION_DRIVER: 'cookie',
-      APP_URL: 'https://${{api.RAILWAY_PUBLIC_DOMAIN}}',
+      APP_URL: 'https://${{@truff-apps/api.RAILWAY_PUBLIC_DOMAIN}}',
       APP_KEY: preserve(),
       SECRET_TOKEN: preserve(),
       DB_HOST: db.env.PGHOST,
