@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 
 import { query } from '@/lib/tuyau'
 import { queryClient } from '@/lib/query_client'
 import { redirectToDashboardIfAuthenticated } from '@/hooks/auth'
+import { loginSchema, type LoginFormValues } from '@/lib/auth_schemas'
+import { applyServerErrors, getApiFormErrors } from '@/lib/form_server_errors'
 import { Input } from '@/components/ui/input'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { BrandLogo } from '@/components/brand_logo'
@@ -19,12 +22,18 @@ export const Route = createFileRoute('/auth/login')({
 function RouteComponent() {
   const navigate = useNavigate()
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
-
-  const [errors, setErrors] = useState<Record<string, string>>({})
 
   const login = useMutation(
     query.auth.login.mutationOptions({
@@ -32,29 +41,21 @@ function RouteComponent() {
         await queryClient.resetQueries()
         await navigate({ to: '/dashboard' })
       },
-      onError: (error: any) => {
-        if (error.response?.data?.errors) {
-          setErrors(error.response.data.errors)
+      onError: error => {
+        const apiErrors = getApiFormErrors(error)
+        if (apiErrors) {
+          applyServerErrors(apiErrors, setError)
         } else {
-          setErrors({ general: 'Identifiants invalides.' })
+          setError('root', { type: 'server', message: 'Identifiants invalides.' })
         }
       },
     }),
   )
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setErrors({})
+  const onSubmit = (data: LoginFormValues) => {
     login.mutate({
-      body: { email: formData.email, password: formData.password },
+      body: { email: data.email, password: data.password },
     })
-  }
-
-  const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, [field]: e.target.value }))
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }))
-    }
   }
 
   return (
@@ -65,34 +66,30 @@ function RouteComponent() {
           <CardTitle>Connexion</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <FieldGroup>
-              {errors.general && (
-                <FieldDescription className="text-destructive text-center">
-                  {errors.general}
-                </FieldDescription>
-              )}
-              <Field>
+              <FieldError>{errors.root?.message}</FieldError>
+              <Field data-invalid={!!errors.email}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   autoComplete="email"
-                  value={formData.email}
-                  onChange={handleChange('email')}
-                  required
+                  aria-invalid={!!errors.email}
+                  {...register('email')}
                 />
+                <FieldError errors={[errors.email]} />
               </Field>
-              <Field>
+              <Field data-invalid={!!errors.password}>
                 <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
                 <Input
                   id="password"
                   type="password"
                   autoComplete="current-password"
-                  value={formData.password}
-                  onChange={handleChange('password')}
-                  required
+                  aria-invalid={!!errors.password}
+                  {...register('password')}
                 />
+                <FieldError errors={[errors.password]} />
               </Field>
               <Field>
                 <Button type="submit" className="w-full" disabled={login.isPending}>

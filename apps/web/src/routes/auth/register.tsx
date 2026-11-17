@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 
 import { query } from '@/lib/tuyau'
 import { queryClient } from '@/lib/query_client'
 import { redirectToDashboardIfAuthenticated } from '@/hooks/auth'
+import { registerSchema, type RegisterFormValues } from '@/lib/auth_schemas'
+import { applyServerErrors, getApiFormErrors } from '@/lib/form_server_errors'
 import { Input } from '@/components/ui/input'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { BrandLogo } from '@/components/brand_logo'
@@ -19,47 +22,46 @@ export const Route = createFileRoute('/auth/register')({
 function RouteComponent() {
   const navigate = useNavigate()
 
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
   })
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
-
-  const register = useMutation(
+  const registerMutation = useMutation(
     query.auth.register.mutationOptions({
       onSuccess: async () => {
         await queryClient.resetQueries()
         await navigate({ to: '/dashboard' })
       },
-      onError: (error: any) => {
-        if (error.response?.data?.errors) setErrors(error.response.data.errors)
+      onError: error => {
+        const apiErrors = getApiFormErrors(error)
+        if (apiErrors) {
+          applyServerErrors(apiErrors, setError)
+        }
       },
     }),
   )
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setErrors({})
-
-    register.mutate({
+  const onSubmit = (data: RegisterFormValues) => {
+    registerMutation.mutate({
       body: {
-        fullName: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-        // @ts-expect-error accepté par l’API (confirmation Vine)
-        passwordConfirmation: formData.confirmPassword,
+        fullName: data.fullName || null,
+        email: data.email,
+        password: data.password,
+        // @ts-expect-error accepté par l'API (confirmation Vine)
+        passwordConfirmation: data.confirmPassword,
       },
     })
-  }
-
-  const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, [field]: e.target.value }))
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }))
-    }
   }
 
   return (
@@ -70,55 +72,56 @@ function RouteComponent() {
           <CardTitle>Inscription</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <FieldGroup>
-              <Field>
+              <FieldError>{errors.root?.message}</FieldError>
+              <Field data-invalid={!!errors.fullName}>
                 <FieldLabel htmlFor="name">Nom</FieldLabel>
                 <Input
                   id="name"
                   type="text"
                   autoComplete="name"
-                  value={formData.fullName}
-                  onChange={handleChange('fullName')}
-                  required
+                  aria-invalid={!!errors.fullName}
+                  {...register('fullName')}
                 />
+                <FieldError errors={[errors.fullName]} />
               </Field>
-              <Field>
+              <Field data-invalid={!!errors.email}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   autoComplete="email"
-                  value={formData.email}
-                  onChange={handleChange('email')}
-                  required
+                  aria-invalid={!!errors.email}
+                  {...register('email')}
                 />
+                <FieldError errors={[errors.email]} />
               </Field>
-              <Field>
+              <Field data-invalid={!!errors.password}>
                 <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
                 <Input
                   id="password"
                   type="password"
                   autoComplete="new-password"
-                  value={formData.password}
-                  onChange={handleChange('password')}
-                  required
+                  aria-invalid={!!errors.password}
+                  {...register('password')}
                 />
+                <FieldError errors={[errors.password]} />
               </Field>
-              <Field>
+              <Field data-invalid={!!errors.confirmPassword}>
                 <FieldLabel htmlFor="confirm-password">Confirmation</FieldLabel>
                 <Input
                   id="confirm-password"
                   type="password"
                   autoComplete="new-password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange('confirmPassword')}
-                  required
+                  aria-invalid={!!errors.confirmPassword}
+                  {...register('confirmPassword')}
                 />
+                <FieldError errors={[errors.confirmPassword]} />
               </Field>
               <Field>
-                <Button type="submit" className="w-full" disabled={register.isPending}>
-                  {register.isPending ? 'Création…' : 'Créer le compte'}
+                <Button type="submit" className="w-full" disabled={registerMutation.isPending}>
+                  {registerMutation.isPending ? 'Création…' : 'Créer le compte'}
                 </Button>
                 <FieldDescription className="text-center">
                   Déjà un compte ?{' '}
