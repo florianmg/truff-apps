@@ -81,7 +81,10 @@ export function CreateClientSheet({ open, onOpenChange }: CreateClientSheetProps
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-md">
+      <SheetContent
+        side="right"
+        className="w-full max-w-full data-[side=right]:w-full data-[side=right]:max-w-full sm:max-w-lg sm:data-[side=right]:max-w-lg"
+      >
         <SheetHeader className="border-b border-border">
           <SheetTitle>Nouveau client</SheetTitle>
           <SheetDescription>Ajoutez un client et son contact principal.</SheetDescription>
@@ -95,26 +98,28 @@ export function CreateClientSheet({ open, onOpenChange }: CreateClientSheetProps
         >
           <FieldGroup className="py-4">
             <FieldError>{errors.root?.message}</FieldError>
-            <Field data-invalid={!!errors.firstName}>
-              <FieldLabel htmlFor="client-first-name">Prénom</FieldLabel>
-              <Input
-                id="client-first-name"
-                autoComplete="given-name"
-                aria-invalid={!!errors.firstName}
-                {...register('firstName')}
-              />
-              <FieldError errors={[errors.firstName]} />
-            </Field>
-            <Field data-invalid={!!errors.lastName}>
-              <FieldLabel htmlFor="client-last-name">Nom</FieldLabel>
-              <Input
-                id="client-last-name"
-                autoComplete="family-name"
-                aria-invalid={!!errors.lastName}
-                {...register('lastName')}
-              />
-              <FieldError errors={[errors.lastName]} />
-            </Field>
+            <div className="grid grid-cols-2 gap-4">
+              <Field data-invalid={!!errors.firstName}>
+                <FieldLabel htmlFor="client-first-name">Prénom</FieldLabel>
+                <Input
+                  id="client-first-name"
+                  autoComplete="given-name"
+                  aria-invalid={!!errors.firstName}
+                  {...register('firstName')}
+                />
+                <FieldError errors={[errors.firstName]} />
+              </Field>
+              <Field data-invalid={!!errors.lastName}>
+                <FieldLabel htmlFor="client-last-name">Nom</FieldLabel>
+                <Input
+                  id="client-last-name"
+                  autoComplete="family-name"
+                  aria-invalid={!!errors.lastName}
+                  {...register('lastName')}
+                />
+                <FieldError errors={[errors.lastName]} />
+              </Field>
+            </div>
             <Field data-invalid={!!errors.email}>
               <FieldLabel htmlFor="client-email">Email</FieldLabel>
               <Input
