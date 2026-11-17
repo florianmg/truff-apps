@@ -6,11 +6,22 @@ const sources = {
 } as const
 
 type BrandLogoProps = {
-  variant?: keyof typeof sources
+  variant?: keyof typeof sources | 'wordmark'
   className?: string
 }
 
 export function BrandLogo({ variant = 'horizontal', className }: BrandLogoProps) {
+  if (variant === 'wordmark') {
+    return (
+      <span className={cn('inline-flex items-center gap-2', className)}>
+        <img src="/brand/truff-app.svg" alt="" className="size-8" />
+        <span className="font-logo text-3xl leading-none font-semibold tracking-[-0.02em] text-primary">
+          tru<span className="tracking-[-0.12em]">f</span>f
+        </span>
+      </span>
+    )
+  }
+
   return (
     <img
       src={sources[variant]}
