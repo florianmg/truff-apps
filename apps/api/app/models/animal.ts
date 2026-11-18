@@ -6,6 +6,7 @@ import type { AnimalSex, AnimalSpecies } from '@truff-apps/domain/animals'
 import AnimalDocument from '#models/animal_document'
 import Client from '#models/client'
 import File from '#models/file'
+import Organization from '#models/organization'
 
 export default class Animal extends AnimalSchema {
   @column()
@@ -13,6 +14,9 @@ export default class Animal extends AnimalSchema {
 
   @column()
   declare species: AnimalSpecies
+
+  @belongsTo(() => Organization)
+  declare organization: BelongsTo<typeof Organization>
 
   @belongsTo(() => Client)
   declare client: BelongsTo<typeof Client>

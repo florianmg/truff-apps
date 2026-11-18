@@ -5,6 +5,7 @@
   "type": "module",
   "imports": {
     "#app/*": "./app/*.js",
+    "#actions/*": "./app/actions/*.js",
     "#mixins/*": "./app/mixins/*.js",
     "#utils/*": "./app/utils/*.js",
     "#controllers/*": "./app/controllers/*.js",
@@ -45,7 +46,6 @@
     "@adonisjs/lucid": "^22.4.2",
     "@adonisjs/session": "^8.3.0",
     "@adonisjs/shield": "^9.0.0",
-    "@adonisjs/static": "^2.0.1",
     "@truff-apps/domain": "workspace:*",
     "@tuyau/core": "catalog:",
     "@vinejs/vine": "^4.4.0",

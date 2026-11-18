@@ -9,7 +9,7 @@
 - PostgreSQL 18
 - Turborepo & PNPM for monorepo management
 - Oxlint & Oxformat for fast linting/formatting
-- Module-based folder structure
+- Classic AdonisJS folder structure (controllers, models, validators, transformers, actions)
 
 ## Getting started
 

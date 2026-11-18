@@ -8,12 +8,6 @@ import {
   listAnimalsValidator,
 } from '#validators/animal'
 
-function animalsForOrganization(organizationId: number) {
-  return Animal.query().whereHas('client', query => {
-    query.where('organizationId', organizationId)
-  })
-}
-
 export default class AnimalsController {
   async index({ request, serialize, auth }: HttpContext) {
     const user = auth.getUserOrFail()
@@ -25,7 +19,9 @@ export default class AnimalsController {
       data: request.qs(),
     })
 
-    const query = animalsForOrganization(user.organizationId).orderBy('createdAt', 'desc')
+    const query = Animal.query()
+      .where('organizationId', user.organizationId)
+      .orderBy('createdAt', 'desc')
 
     if (clientId !== undefined) {
       query.where('clientId', clientId)
@@ -43,7 +39,11 @@ export default class AnimalsController {
     await findClientForOrganization(user.organizationId, payload.clientId)
 
     const { clientId, ...attributes } = payload
-    const animal = await Animal.create({ ...attributes, clientId })
+    const animal = await Animal.create({
+      ...attributes,
+      clientId,
+      organizationId: user.organizationId,
+    })
 
     return await serialize.withoutWrapping(
       AnimalTransformer.transform(animal).useVariant('forDetail'),
@@ -54,7 +54,8 @@ export default class AnimalsController {
     const user = auth.getUserOrFail()
     const { params } = await request.validateUsing(animalIdParamsValidator)
 
-    const animal = await animalsForOrganization(user.organizationId)
+    const animal = await Animal.query()
+      .where('organizationId', user.organizationId)
       .where('id', params.animalId)
       .firstOrFail()
 
@@ -67,7 +68,8 @@ export default class AnimalsController {
     const user = auth.getUserOrFail()
     const { params } = await request.validateUsing(animalIdParamsValidator)
 
-    const animal = await animalsForOrganization(user.organizationId)
+    const animal = await Animal.query()
+      .where('organizationId', user.organizationId)
       .where('id', params.animalId)
       .firstOrFail()
 

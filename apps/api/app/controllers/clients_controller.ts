@@ -55,6 +55,7 @@ export default class ClientsController {
         await Animal.createMany(
           payload.animals.map(animal => ({
             clientId: createdClient.id,
+            organizationId: user.organizationId,
             name: animal.name,
             species: animal.species,
           })),

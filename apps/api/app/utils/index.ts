@@ -1,12 +1,4 @@
 import router from '@adonisjs/core/services/router'
-import app from '@adonisjs/core/services/app'
-
-/**
- * Construct something with the IoC container
- */
-export function make<Binding>(name: Binding) {
-  return app.container.make(name)
-}
 
 /**
  * Define a route group.

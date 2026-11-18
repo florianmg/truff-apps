@@ -3,6 +3,7 @@ import { belongsTo, hasMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 
 import User from '#models/user'
+import Animal from '#models/animal'
 import Client from '#models/client'
 import Contact from '#models/contact'
 import File from '#models/file'
@@ -10,6 +11,9 @@ import File from '#models/file'
 export default class Organization extends OrganizationSchema {
   @belongsTo(() => File, { foreignKey: 'logoFileId' })
   declare logo: BelongsTo<typeof File>
+
+  @hasMany(() => Animal)
+  declare animals: HasMany<typeof Animal>
 
   @hasMany(() => Client)
   declare clients: HasMany<typeof Client>

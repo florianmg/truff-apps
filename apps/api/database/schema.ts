@@ -67,6 +67,7 @@ export class AnimalSchema extends BaseModel {
     'foodInstructions',
     'id',
     'name',
+    'organizationId',
     'profileFileId',
     'sex',
     'species',
@@ -96,6 +97,8 @@ export class AnimalSchema extends BaseModel {
   declare id: number
   @column()
   declare name: string
+  @column()
+  declare organizationId: number
   @column()
   declare profileFileId: number | null
   @column()

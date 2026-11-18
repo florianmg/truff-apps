@@ -119,6 +119,14 @@ export default class extends BaseSchema {
     this.schema.createTable('animals', table => {
       table.increments('id').notNullable()
       table
+        .integer('organization_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('organizations')
+        .onDelete('CASCADE')
+      table.index('organization_id')
+      table
         .integer('client_id')
         .unsigned()
         .notNullable()
@@ -133,7 +141,7 @@ export default class extends BaseSchema {
       table.boolean('sterilized').nullable()
       table.date('birth_date').nullable()
       table.date('adoption_date').nullable()
-      table.decimal('weight', 6, 3).nullable()
+      table.string('weight').nullable()
       table.string('chip_number').nullable()
       table.string('tattoo').nullable()
       table.text('diet').nullable()
@@ -143,6 +151,12 @@ export default class extends BaseSchema {
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
+
+      table
+        .foreign(['client_id', 'organization_id'])
+        .references(['id', 'organization_id'])
+        .inTable('clients')
+        .onDelete('CASCADE')
     })
 
     this.schema.createTable('users', table => {
