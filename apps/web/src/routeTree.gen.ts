@@ -14,7 +14,6 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedAnimalsRouteImport } from './routes/_authenticated/animals'
 import { Route as AuthenticatedBrandRouteImport } from './routes/_authenticated/brand'
 import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
@@ -44,11 +43,6 @@ const AuthenticatedBrandRoute = AuthenticatedBrandRouteImport.update({
 const AuthenticatedClientsRoute = AuthenticatedClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -90,7 +84,6 @@ export interface FileRoutesByFullPath {
   '/animals': typeof AuthenticatedAnimalsRouteWithChildren
   '/brand': typeof AuthenticatedBrandRoute
   '/clients': typeof AuthenticatedClientsRouteWithChildren
-  '/dashboard': typeof AuthenticatedDashboardRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -102,7 +95,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/animals': typeof AuthenticatedAnimalsRouteWithChildren
   '/brand': typeof AuthenticatedBrandRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -117,7 +109,6 @@ export interface FileRoutesById {
   '/_authenticated/animals': typeof AuthenticatedAnimalsRouteWithChildren
   '/_authenticated/brand': typeof AuthenticatedBrandRoute
   '/_authenticated/clients': typeof AuthenticatedClientsRouteWithChildren
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -132,7 +123,6 @@ export interface FileRouteTypes {
     | '/animals'
     | '/brand'
     | '/clients'
-    | '/dashboard'
     | '/settings'
     | '/auth/login'
     | '/auth/register'
@@ -144,7 +134,6 @@ export interface FileRouteTypes {
     | '/'
     | '/animals'
     | '/brand'
-    | '/dashboard'
     | '/settings'
     | '/auth/login'
     | '/auth/register'
@@ -158,7 +147,6 @@ export interface FileRouteTypes {
     | '/_authenticated/animals'
     | '/_authenticated/brand'
     | '/_authenticated/clients'
-    | '/_authenticated/dashboard'
     | '/_authenticated/settings'
     | '/auth/login'
     | '/auth/register'
@@ -209,13 +197,6 @@ declare module '@tanstack/react-router' {
       path: '/clients'
       fullPath: '/clients'
       preLoaderRoute: typeof AuthenticatedClientsRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/settings': {
@@ -291,7 +272,6 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAnimalsRoute: typeof AuthenticatedAnimalsRouteWithChildren
   AuthenticatedBrandRoute: typeof AuthenticatedBrandRoute
   AuthenticatedClientsRoute: typeof AuthenticatedClientsRouteWithChildren
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 }
 
@@ -299,7 +279,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAnimalsRoute: AuthenticatedAnimalsRouteWithChildren,
   AuthenticatedBrandRoute: AuthenticatedBrandRoute,
   AuthenticatedClientsRoute: AuthenticatedClientsRouteWithChildren,
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 }
 

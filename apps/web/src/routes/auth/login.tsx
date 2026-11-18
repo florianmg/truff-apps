@@ -39,7 +39,7 @@ function RouteComponent() {
     query.auth.login.mutationOptions({
       onSuccess: async () => {
         await queryClient.resetQueries()
-        await navigate({ to: '/dashboard' })
+        await navigate({ to: '/clients' })
       },
       onError: error => {
         const apiErrors = getApiFormErrors(error)

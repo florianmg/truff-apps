@@ -25,5 +25,5 @@ export async function redirectToLoginIfNotAuthenticated() {
 
 export async function redirectToDashboardIfAuthenticated() {
   const isAuth = await isAuthenticated()
-  if (isAuth) throw redirect({ to: '/dashboard' })
+  if (isAuth) throw redirect({ to: '/clients' })
 }
