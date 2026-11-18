@@ -3,27 +3,26 @@ import { useQuery } from '@tanstack/react-query'
 
 import { AnimalDetail } from '@/components/animals/animal_detail'
 import { Skeleton } from '@/components/ui/skeleton'
-import { parseRouteId } from '@/lib/parse_route_id'
 import { query } from '@/lib/tuyau'
 
 export const Route = createFileRoute('/_authenticated/animals/$animalId')({
+  params: {
+    parse: ({ animalId }) => {
+      const id = Number(animalId)
+      if (!Number.isInteger(id) || id <= 0) return false
+      return { animalId: id }
+    },
+    stringify: ({ animalId }) => ({ animalId: String(animalId) }),
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { animalId: animalIdParam } = Route.useParams()
-  const animalId = parseRouteId(animalIdParam)
+  const { animalId } = Route.useParams()
 
   const { data, isPending, isError } = useQuery(
-    query.animals.show.queryOptions(
-      { params: { animalId: animalId! } },
-      { enabled: animalId !== null },
-    ),
+    query.animals.show.queryOptions({ params: { animalId } }),
   )
-
-  if (animalId === null) {
-    return <p className="text-muted-foreground">Identifiant invalide.</p>
-  }
 
   if (isPending) {
     return (
