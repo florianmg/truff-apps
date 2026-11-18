@@ -1,14 +1,21 @@
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { PlusIcon, Trash2Icon } from 'lucide-react'
+import { animalSpecies } from '@truff-apps/domain/animals'
 
 import { query } from '@/lib/tuyau'
 import { queryClient } from '@/lib/query_client'
-import { createClientSchema, type CreateClientFormValues } from '@/lib/client_schemas'
+import {
+  animalSpeciesLabels,
+  createClientSchema,
+  type CreateClientFormValues,
+} from '@/lib/client_schemas'
 import { applyServerErrors, getApiFormErrors } from '@/lib/form_server_errors'
 import { Input } from '@/components/ui/input'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Button } from '@/components/ui/button'
+import { NativeSelect, NativeSelectOption } from '@/components/ui/native_select'
 import {
   Sheet,
   SheetClose,
@@ -24,6 +31,7 @@ const defaultValues: CreateClientFormValues = {
   lastName: '',
   email: '',
   phone: '',
+  animals: [],
 }
 
 type CreateClientSheetProps = {
@@ -34,6 +42,7 @@ type CreateClientSheetProps = {
 export function CreateClientSheet({ open, onOpenChange }: CreateClientSheetProps) {
   const {
     register,
+    control,
     handleSubmit,
     reset,
     setError,
@@ -41,6 +50,11 @@ export function CreateClientSheet({ open, onOpenChange }: CreateClientSheetProps
   } = useForm<CreateClientFormValues>({
     resolver: zodResolver(createClientSchema),
     defaultValues,
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'animals',
   })
 
   const createClient = useMutation(
@@ -75,6 +89,7 @@ export function CreateClientSheet({ open, onOpenChange }: CreateClientSheetProps
         lastName: data.lastName,
         email: data.email === '' ? null : data.email,
         phone: data.phone === '' ? null : data.phone,
+        animals: data.animals,
       },
     })
   }
@@ -142,6 +157,63 @@ export function CreateClientSheet({ open, onOpenChange }: CreateClientSheetProps
               />
               <FieldError errors={[errors.phone]} />
             </Field>
+
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between gap-2">
+                <FieldLabel>Animaux</FieldLabel>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => append({ name: '', species: 'cat' })}
+                >
+                  <PlusIcon />
+                  Ajouter un animal
+                </Button>
+              </div>
+
+              {fields.map((field, index) => (
+                <div key={field.id} className="flex items-start gap-2">
+                  <div className="grid flex-1 grid-cols-2 gap-4">
+                    <Field data-invalid={!!errors.animals?.[index]?.species}>
+                      <FieldLabel htmlFor={`animal-species-${index}`}>Espèce</FieldLabel>
+                      <NativeSelect
+                        id={`animal-species-${index}`}
+                        className="w-full"
+                        aria-invalid={!!errors.animals?.[index]?.species}
+                        {...register(`animals.${index}.species`)}
+                      >
+                        {animalSpecies.map(species => (
+                          <NativeSelectOption key={species} value={species}>
+                            {animalSpeciesLabels[species]}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <FieldError errors={[errors.animals?.[index]?.species]} />
+                    </Field>
+                    <Field data-invalid={!!errors.animals?.[index]?.name}>
+                      <FieldLabel htmlFor={`animal-name-${index}`}>Nom</FieldLabel>
+                      <Input
+                        id={`animal-name-${index}`}
+                        aria-invalid={!!errors.animals?.[index]?.name}
+                        {...register(`animals.${index}.name`)}
+                      />
+                      <FieldError errors={[errors.animals?.[index]?.name]} />
+                    </Field>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    className="mt-7 shrink-0"
+                    onClick={() => remove(index)}
+                    aria-label="Supprimer l'animal"
+                  >
+                    <Trash2Icon />
+                  </Button>
+                </div>
+              ))}
+            </div>
           </FieldGroup>
         </form>
 

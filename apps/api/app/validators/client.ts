@@ -1,10 +1,19 @@
 import vine from '@vinejs/vine'
+import { animalSpecies } from '@truff-apps/domain/animals'
 
 export const createClientValidator = vine.create({
   firstName: vine.string().trim(),
   lastName: vine.string().trim(),
   email: vine.string().email().maxLength(254).nullable().optional(),
   phone: vine.string().maxLength(32).nullable().optional(),
+  animals: vine
+    .array(
+      vine.object({
+        name: vine.string().trim(),
+        species: vine.enum(animalSpecies),
+      }),
+    )
+    .optional(),
 })
 
 export const listClientsValidator = vine.create({

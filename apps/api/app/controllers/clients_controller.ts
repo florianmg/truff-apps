@@ -1,5 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
+import Animal from '#models/animal'
 import Client from '#models/client'
 import Contact from '#models/contact'
 import ClientTransformer from '#transformers/client_transformer'
@@ -50,7 +51,19 @@ export default class ClientsController {
         { client: trx },
       )
 
+      if (payload.animals?.length) {
+        await Animal.createMany(
+          payload.animals.map(animal => ({
+            clientId: createdClient.id,
+            name: animal.name,
+            species: animal.species,
+          })),
+          { client: trx },
+        )
+      }
+
       await createdClient.load('contacts', query => query.where('isPrimary', true))
+      await createdClient.load('animals')
       return createdClient
     })
 
